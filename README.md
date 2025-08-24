@@ -335,41 +335,60 @@
     }, 2000);
   }
 
-  function mostrarPergunta() {
-    trocarTela('questionScreen');
-    const p = perguntas[indice];
-    document.getElementById('progressoPergunta').textContent = 
-        `Pergunta ${indice + 1} de ${perguntas.length}`;
-    document.getElementById('pergunta').textContent = p.q;
-    p.options.forEach((op, i) => {
-      const botao = document.getElementById(`opt${i}`);
-      botao.textContent = op;
+ function mostrarPergunta() {
+  trocarTela('questionScreen');
+  const p = perguntas[indice];
+  document.getElementById('progressoPergunta').textContent = 
+      `Pergunta ${indice + 1} de ${perguntas.length}`;
+  document.getElementById('pergunta').textContent = p.q;
 
-      botao.classList.remove('correta', 'errada', 'desativado');
+  p.options.forEach((op, i) => {
+    const botao = document.getElementById(`opt${i}`);
+    botao.textContent = op;
+    botao.classList.remove('correta', 'errada', 'desativado');
 
-      if (i === 0) botao.className = 'opcao-vermelho';
-      if (i === 1) botao.className = 'opcao-azul';
-      if (i === 2) botao.className = 'opcao-amarelo';
-      if (i === 3) botao.className = 'opcao-verde';
-      botao.id = `opt${i}`;
-    });
+    if (i === 0) botao.className = 'opcao-vermelho';
+    if (i === 1) botao.className = 'opcao-azul';
+    if (i === 2) botao.className = 'opcao-amarelo';
+    if (i === 3) botao.className = 'opcao-verde';
+  });
 
-    tempo = 10;
-    const barra = document.getElementById('preenchimentoBarra');
-barra.style.width = '100%';
-    clearInterval(timerInterval);
-   timerInterval = setInterval(() => {
-  tempo--;
-  const barra = document.getElementById('preenchimentoBarra');
-  let porcentagem = (tempo / 10) * 100; // 10 é o tempo total da pergunta
-  barra.style.width = porcentagem + '%';
+  // ===== Inicializa a barra =====
+  clearInterval(timerInterval);
+  let tempoTotal = 10000;          
+  let tempoRestante = tempoTotal;
+  let barra = document.getElementById('preenchimentoBarra');
+  barra.style.width = '100%'; // começa cheia
 
-  if (tempo <= 0) {
-    clearInterval(timerInterval);
-    verificarResposta(-1);
-  }
-}, 1000);
-  }
+  timerInterval = setInterval(() => {
+    tempoRestante -= 20;
+    if (tempoRestante < 0) tempoRestante = 0;
+
+    let porcentagem = (tempoRestante / tempoTotal) * 100;
+    barra.style.width = porcentagem + '%';
+
+    // Gradiente verde -> amarelo -> vermelho
+    let r, g, b;
+    if (porcentagem > 50) {
+      let t = (100 - porcentagem) / 50;
+      r = Math.round(46 + t * (241 - 46));
+      g = Math.round(204 + t * (196 - 204));
+      b = Math.round(113 + t * (15 - 113));
+    } else {
+      let t = (50 - porcentagem) / 50;
+      r = Math.round(241 + t * (231 - 241));
+      g = Math.round(196 + t * (76 - 196));
+      b = Math.round(15 + t * (60 - 15));
+    }
+    barra.style.background = `rgb(${r},${g},${b})`;
+
+    if (tempoRestante <= 0) {
+      clearInterval(timerInterval);
+      verificarResposta(-1);
+    }
+  }, 20);
+}
+
 
   function trocarTela(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
