@@ -10,6 +10,23 @@
    <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
   <style>
+    /* Tela de parabéns */
+#rewardScreen {
+  background: #FFD700; /* amarelo ouro no fundo */
+  color: #000; /* texto preto para contraste */
+}
+
+/* Caixa do texto */
+#rewardScreen .caixa {
+  background: #FFF8B0; /* amarelo clarinho */
+  padding: 20px;        /* menos espaçamento interno */
+  border-radius: 20px; 
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+  max-width: 5000px;     /* menor largura */
+  margin: 400px auto 0; /* centraliza horizontalmente e empurra pra baixo */
+  text-align: center;   /* mantém o texto centralizado */
+}
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -73,6 +90,14 @@
   border-radius: 10px;
   padding: 10px;
 }
+  .progresso {
+  text-align: center;           /* centraliza o texto */
+  color: gold;                  /* dourado */
+  font-size: 1.8em;             /* aumenta o tamanho */
+  font-weight: bold;            /* deixa destacado */
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.5); /* sombra para destacar */
+  margin-bottom: 15px;
+}
 
     .opcao-vermelho { background: #e74c3c; }
     .opcao-azul    { background: #3498db; }
@@ -97,7 +122,7 @@
 
     /* ===== Teclado Virtual ===== */
     #keyboard {
-       #keyboard {
+ #keyboard {
     display: none; /* oculto por padrão */
     border: 1px solid #ccc;
     padding: 10px;
@@ -113,15 +138,6 @@
     display: flex;
     margin-bottom: 8px;
   }
-
-  .progresso {
-  text-align: center;           /* centraliza o texto */
-  color: gold;                  /* dourado */
-  font-size: 1.8em;             /* aumenta o tamanho */
-  font-weight: bold;            /* deixa destacado */
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.5); /* sombra para destacar */
-  margin-bottom: 15px;
-}
 
 
   .key {
@@ -144,6 +160,7 @@
     text-align: center;
   }
 }
+
     @keyframes fadeIn { from {opacity:0} to {opacity:1} }
   </style>
 </head>
@@ -219,8 +236,10 @@
   <button onclick="mostrarRecompensa()">Ver Surpresa</button>
 </div>
 <div class="screen" id="rewardScreen">
-  <h1>Parabéns, <span id="userName"></span>! 🎉</h1>
-  <p>Você acertou tudinho! Aqui está sua surpresa: 🎁</p>
+  <div class="caixa">
+    <h1>Parabéns, <span id="userName"></span>! 🎉</h1>
+    <p>Você acertou tudinho! Aqui está sua surpresa: 🎁</p>
+  </div>
 </div>
 
 <script>
